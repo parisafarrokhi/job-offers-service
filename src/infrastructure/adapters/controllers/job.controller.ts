@@ -1,12 +1,16 @@
 import { Controller, Get } from '@nestjs/common';
 import { JobService } from '../../../application/services/job.service';
 
-@Controller()
+@Controller('api')
 export class JobController {
   constructor(private readonly jobService: JobService) {}
 
-  @Get('/job')
+  @Get()
   getHello(): string {
     return this.jobService.getHello();
+  }
+  @Get('/job-offers')
+  list() {
+    return this.jobService.getAllJobs();
   }
 }

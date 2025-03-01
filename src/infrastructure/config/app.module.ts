@@ -9,12 +9,14 @@ import { JobCronService } from '../../application/services/job-cron.service';
 import { JobService } from '../../application/services/job.service';
 import { AppService } from '../../application/services/app.service';
 import { JobController } from '../adapters/controllers/job.controller';
+import { JobModule } from '../database/job.module';
 
 @Module({
   controllers: [AppController, JobController],
   imports: [
     ScheduleModule.forRoot(),
     HttpModule,
+    JobModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -26,6 +28,12 @@ import { JobController } from '../adapters/controllers/job.controller';
       }),
     }),
   ],
-  providers: [JobService, JobCronService, AppService, JobProviderService, ConfigService],
+  providers: [
+    JobService,
+    JobCronService,
+    AppService,
+    JobProviderService,
+    ConfigService,
+  ],
 })
 export class AppModule {}
