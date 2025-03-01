@@ -23,4 +23,8 @@ export class JobRepository {
   async findByJobId(jobId: string): Promise<JobInterface | null> {
     return this.jobModel.findOne({ jobId }).exec();
   }
+
+  async findByCondition(skip, limit, condition): Promise<JobInterface[]> {
+    return this.jobModel.find(condition).skip(skip).limit(limit).exec();
+  }
 }

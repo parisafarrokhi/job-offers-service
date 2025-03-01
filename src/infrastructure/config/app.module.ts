@@ -28,12 +28,6 @@ import { JobModule } from '../database/job.module';
       }),
     }),
   ],
-  providers: [
-    JobService,
-    JobCronService,
-    AppService,
-    JobProviderService,
-    ConfigService,
-  ],
+  providers: [JobService, JobCronService, AppService, JobProviderService, ConfigService],
 })
 export class AppModule {}

@@ -4,8 +4,8 @@ import { JobRepository } from './repositories/job.repository';
 import { JobModel } from './models/job.schema';
 
 @Module({
-    imports: [MongooseModule.forFeature([{ name: 'Job', schema: JobModel }])],
-    providers: [JobRepository],
-    exports: [JobRepository],
+  imports: [MongooseModule.forFeature([{ name: 'Job', schema: JobModel }])],
+  providers: [JobRepository],
+  exports: [JobRepository],
 })
-export class JobModule { }
+export class JobModule {}
