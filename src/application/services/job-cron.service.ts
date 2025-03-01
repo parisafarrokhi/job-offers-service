@@ -10,7 +10,7 @@ export class JobCronService {
   constructor(
     private readonly configService: ConfigService,
     private readonly jobProvider: JobProviderService,
-  ) { }
+  ) {}
 
   private getJobOffersProviders(): JobProvider[] {
     return [

@@ -11,7 +11,7 @@ export class JobProviderService {
   private readonly logger = new Logger(JobProviderService.name);
 
   constructor(private readonly httpService: HttpService) {}
-  async getJobsFromAPI(jobOffersProviders: JobProvider[]):Promise<UnifiedJobResponse[]> {
+  async getJobsFromAPI(jobOffersProviders: JobProvider[]): Promise<UnifiedJobResponse[]> {
     try {
       const unifiedJobs: UnifiedJobResponse[] = [];
       for (const jobOffersProvider of jobOffersProviders) {
@@ -29,7 +29,7 @@ export class JobProviderService {
 
   private tranformJobOfferData(
     providerName: string,
-    data: Provider1JobResponse | Provider2JobResponse
+    data: Provider1JobResponse | Provider2JobResponse,
   ): UnifiedJobResponse[] {
     switch (providerName) {
       case 'provider1':
@@ -42,9 +42,12 @@ export class JobProviderService {
     }
   }
 
-  private transformProvider1Jobs(data: Provider1JobResponse): UnifiedJobResponse[]{
+  private transformProvider1Jobs(data: Provider1JobResponse): UnifiedJobResponse[] {
     const convertSalaryRange = (salaryRange: string) => {
-      let cleanSalaryRange = salaryRange.replace(/\$/g, '').replace(/\s+/g, '').replace(/k/g, '000');
+      let cleanSalaryRange = salaryRange
+        .replace(/\$/g, '')
+        .replace(/\s+/g, '')
+        .replace(/k/g, '000');
       const [minSalary, maxSalary] = cleanSalaryRange.split('-').map(Number);
       return {
         min: +minSalary,
@@ -66,26 +69,26 @@ export class JobProviderService {
         skills: job.skills,
         postedDate: job.postedDate,
       };
-    })
-  };
+    });
+  }
 
-  private transformProvider2Jobs(data: Provider2JobResponse): UnifiedJobResponse []{
-      return Object.keys(data.data.jobsList).map((jobId) => {
-        const job = data.data.jobsList[jobId];
-        return {
-          jobId: jobId,
-          title: job.position,
-          location: `${job.location.city}, ${job.location.state}`,
-          remote: job.location.remote,
-          compensation: job.compensation,
-          employer: {
-            companyName: job.employer.companyName,
-            website: job.employer.website,
-          },
-          experience: job.requirements.experience,
-          skills: job.requirements.technologies,
-          postedDate: job.datePosted,
-        };
-      });
+  private transformProvider2Jobs(data: Provider2JobResponse): UnifiedJobResponse[] {
+    return Object.keys(data.data.jobsList).map((jobId) => {
+      const job = data.data.jobsList[jobId];
+      return {
+        jobId: jobId,
+        title: job.position,
+        location: `${job.location.city}, ${job.location.state}`,
+        remote: job.location.remote,
+        compensation: job.compensation,
+        employer: {
+          companyName: job.employer.companyName,
+          website: job.employer.website,
+        },
+        experience: job.requirements.experience,
+        skills: job.requirements.technologies,
+        postedDate: job.datePosted,
+      };
+    });
   }
 }

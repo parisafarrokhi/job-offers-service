@@ -1,5 +1,3 @@
-
-
 interface Employer {
   companyName: string;
   industry?: string;

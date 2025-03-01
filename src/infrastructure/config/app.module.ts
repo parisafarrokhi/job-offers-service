@@ -11,7 +11,7 @@ import { AppService } from '../../application/services/app.service';
 import { JobController } from '../adapters/controllers/job.controller';
 
 @Module({
-  controllers: [AppController,JobController],
+  controllers: [AppController, JobController],
   imports: [
     ScheduleModule.forRoot(),
     HttpModule,
