@@ -1,18 +1,22 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+import { JobProvider } from '../../../interfaces/job-provider.interface';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class JobProviderService {
   private readonly logger = new Logger(JobProviderService.name);
 
   constructor(private readonly httpService: HttpService) {}
-  async getJobsFromAPI(jobUrl: string) {
+  async getJobsFromAPI(jobOffersProvider: JobProvider) {
     try {
+      const response = await await lastValueFrom(this.httpService.get(jobOffersProvider.url));
+      const data = response.data;
+
       return [];
-      // const response = await this.httpService.get(jobUrl);
       // return this.transformJobsData(response.data);
     } catch (error) {
-      this.logger.error(`Failed to get jobs from ${jobUrl}: ${error.message}`);
+      this.logger.error(`Failed to get jobs from ${jobOffersProvider.url}: ${error.message}`);
       return [];
     }
   }
