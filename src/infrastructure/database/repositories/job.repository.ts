@@ -13,7 +13,16 @@ export class JobRepository {
   }
 
   async createMany(jobDataArray: JobInterface[]): Promise<JobInterface[]> {
-    return this.jobModel.insertMany(jobDataArray);
+    const jobIdsArray = jobDataArray.map(job => job.jobId);
+    const duplicateJobs = await this.jobModel
+      .find({ jobId: { $in: jobIdsArray } })
+      .exec();
+    const duplicateJobIds = new Set(duplicateJobs.map(job => job.jobId));
+    const newJobs = jobDataArray.filter(job => !duplicateJobIds.has(job.jobId));
+    if (newJobs.length > 0) {
+      return this.jobModel.insertMany(newJobs);
+    }
+    return [];
   }
 
   async findAll(): Promise<JobInterface[]> {
