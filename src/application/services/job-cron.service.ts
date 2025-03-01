@@ -3,6 +3,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { JobProvider } from '../../interfaces/job-provider.interface';
 import { JobProviderService } from '../../infrastructure/http/job-provider/job-provider.service';
+import { JobService } from './job.service';
 
 @Injectable()
 export class JobCronService {
@@ -10,6 +11,7 @@ export class JobCronService {
   constructor(
     private readonly configService: ConfigService,
     private readonly jobProvider: JobProviderService,
+    private readonly jobService: JobService,
   ) {}
 
   private getJobOffersProviders(): JobProvider[] {
@@ -31,6 +33,9 @@ export class JobCronService {
       this.logger.log(`Start fetching jobs`);
       const jobOffersProviders = this.getJobOffersProviders();
       const unifiedJobs = await this.jobProvider.getJobsFromAPI(jobOffersProviders);
+      if (unifiedJobs.length > 0) {
+        this.jobService.createManyJobs(unifiedJobs);
+      }
     } catch (error) {
       this.logger.error(`Failed to get jobs : ${error.message}`);
     }
