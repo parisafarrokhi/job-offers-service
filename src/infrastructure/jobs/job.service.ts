@@ -29,10 +29,7 @@ export class JobService {
   async getJobOffersCron() {
     try {
       const jobOffersProviders = this.getJobOffersProviders();
-      for (const jobOffersProvider of jobOffersProviders) {
-        const jobsFetchedByUrl = await this.jobProvider.getJobsFromAPI(jobOffersProvider);
-        this.logger.log(jobsFetchedByUrl);
-      }
+      const unifiedJobs=  await this.jobProvider.getJobsFromAPI(jobOffersProviders);
     } catch (error) {
       this.logger.error(`Failed to get jobs : ${error.message}`);
     }
