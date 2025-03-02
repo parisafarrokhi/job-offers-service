@@ -57,3 +57,10 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+# API Documentation
+
+You can access the API documentation at:
+
+👉 **[Swagger UI](http://localhost:3000/api/docs)**
+
